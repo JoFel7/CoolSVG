@@ -1,8 +1,8 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
-const Circle = require("./lib/shapes").Circle;
-const Triangle = require("./lib/shapes").Triangle;
-const Square = require("./lib/shapes").Square;
+const Circle = require("./lib/shape").Circle;
+const Triangle = require("./lib/shape").Triangle;
+const Square = require("./lib/shape").Square;
 
 // Array of questions to be prompted to the user
 const questions = [
