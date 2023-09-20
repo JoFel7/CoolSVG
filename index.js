@@ -4,6 +4,7 @@ const Circle = require("./lib/shapes").Circle;
 const Triangle = require("./lib/shapes").Triangle;
 const Square = require("./lib/shapes").Square;
 
+// Array of questions to be prompted to the user
 const questions = [
   {
     type: "input",
@@ -28,6 +29,7 @@ const questions = [
   },
 ];
 
+// Function to write data to a file
 function writeToFile(fileName, data) {
   fs.writeFile(fileName, data, (err) => {
     if (err) console.error(err);
@@ -35,11 +37,13 @@ function writeToFile(fileName, data) {
   });
 }
 
+// Function to create a shape and return its rendered SVG representation
 function createShape(shapeType, shapeColor, textColor, text) {
   const shape = new shapeType(shapeColor, textColor, text);
   return shape.render();
 }
 
+// Main function to initiate the logo creation process
 function init() {
   inquirer.prompt(questions).then((response) => {
     let shapeType;
@@ -58,6 +62,7 @@ function init() {
         return;
     }
 
+    // Generate SVG data for the chosen shape and write it to a file
     const svgData = createShape(
       shapeType,
       response.shapeColor,
@@ -69,4 +74,5 @@ function init() {
   });
 }
 
+// Start the logo creation process
 init();
