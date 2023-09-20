@@ -1,5 +1,8 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+const Circle = require("./lib/shapes").Circle;
+const Triangle = require("./lib/shapes").Triangle;
+const Square = require("./lib/shapes").Square;
 
 const questions = [
   {
@@ -8,9 +11,9 @@ const questions = [
     name: "text",
   },
   {
-    choices: ["circle", "triangle", "square"],
+    choices: ["triangle", "square", "circle"],
     type: "list",
-    message: "Choose a shape you want for your logo?",
+    message: "Choose a shape you want for your logo:",
     name: "shape",
   },
   {
@@ -24,3 +27,46 @@ const questions = [
     name: "textColor",
   },
 ];
+
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, data, (err) => {
+    if (err) console.error(err);
+    else console.log("Write logged!");
+  });
+}
+
+function createShape(shapeType, shapeColor, textColor, text) {
+  const shape = new shapeType(shapeColor, textColor, text);
+  return shape.render();
+}
+
+function init() {
+  inquirer.prompt(questions).then((response) => {
+    let shapeType;
+    switch (response.shape) {
+      case "triangle":
+        shapeType = Triangle;
+        break;
+      case "square":
+        shapeType = Square;
+        break;
+      case "circle":
+        shapeType = Circle;
+        break;
+      default:
+        console.log("Invalid shape.");
+        return;
+    }
+
+    const svgData = createShape(
+      shapeType,
+      response.shapeColor,
+      response.textColor,
+      response.text
+    );
+
+    writeToFile(`${response.shape}.svg`, svgData);
+  });
+}
+
+init();
