@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+const path = require("path")
 const Circle = require("./lib/shape").Circle;
 const Triangle = require("./lib/shape").Triangle;
 const Square = require("./lib/shape").Square;
@@ -31,9 +32,10 @@ const questions = [
 
 // Function to write data to a file
 function writeToFile(fileName, data) {
-  fs.writeFile(fileName, data, (err) => {
+  const filePath = path.join(__dirname, "examples", fileName);
+  fs.writeFile(filePath, data, (err) => {
     if (err) console.error(err);
-    else console.log("Write logged!");
+    else console.log(`SVG saved in ${filePath}`);
   });
 }
 
@@ -62,7 +64,7 @@ function init() {
         return;
     }
 
-    // Generate SVG data for the chosen shape and write it to a file
+    // Generate SVG data for the chosen shape and write it to a file in the examples folder
     const svgData = createShape(
       shapeType,
       response.shapeColor,
@@ -70,9 +72,8 @@ function init() {
       response.text
     );
 
-    writeToFile(`${response.shape}.svg`, svgData);
+    writeToFile(path.join(`${response.shape}.svg`), svgData);
   });
 }
-
 // Start the logo creation process
 init();
