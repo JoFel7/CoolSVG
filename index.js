@@ -72,7 +72,7 @@ function init() {
       response.text
     );
 
-    writeToFile(path.join(`${response.shape}.svg`), svgData);
+    writeToFile(path.join(`${response.text}.svg`), svgData);
   });
 }
 // Start the logo creation process
