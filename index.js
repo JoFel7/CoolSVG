@@ -1,9 +1,11 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
-const Circle = require("./lib/shapes").Circle;
-const Triangle = require("./lib/shapes").Triangle;
-const Square = require("./lib/shapes").Square;
+const path = require("path")
+const Circle = require("./lib/shape").Circle;
+const Triangle = require("./lib/shape").Triangle;
+const Square = require("./lib/shape").Square;
 
+// Array of questions to be prompted to the user
 const questions = [
   {
     type: "input",
@@ -28,18 +30,22 @@ const questions = [
   },
 ];
 
+// Function to write data to a file
 function writeToFile(fileName, data) {
-  fs.writeFile(fileName, data, (err) => {
+  const filePath = path.join(__dirname, "examples", fileName);
+  fs.writeFile(filePath, data, (err) => {
     if (err) console.error(err);
-    else console.log("Write logged!");
+    else console.log(`SVG saved in ${filePath}`);
   });
 }
 
+// Function to create a shape and return its rendered SVG representation
 function createShape(shapeType, shapeColor, textColor, text) {
   const shape = new shapeType(shapeColor, textColor, text);
   return shape.render();
 }
 
+// Main function to initiate the logo creation process
 function init() {
   inquirer.prompt(questions).then((response) => {
     let shapeType;
@@ -58,6 +64,7 @@ function init() {
         return;
     }
 
+    // Generate SVG data for the chosen shape and write it to a file in the examples folder
     const svgData = createShape(
       shapeType,
       response.shapeColor,
@@ -65,8 +72,8 @@ function init() {
       response.text
     );
 
-    writeToFile(`${response.shape}.svg`, svgData);
+    writeToFile(path.join(`${response.text}.svg`), svgData);
   });
 }
-
+// Start the logo creation process
 init();
